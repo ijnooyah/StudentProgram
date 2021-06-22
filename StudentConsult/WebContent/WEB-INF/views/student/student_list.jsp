@@ -7,6 +7,8 @@
 <meta charset="UTF-8">
 <%@ include file="../include/bootstrap_cdn.jsp"%>
 <script>
+	//한글 커밋 테스트
+	//안녕
 	$(document).ready(function() {
 		var resultDelete = "${resultDelete}"
 		if (resultDelete == "true") {
