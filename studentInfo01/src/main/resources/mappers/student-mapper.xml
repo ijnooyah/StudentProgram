@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="com.kh.studentInfo01.student">
+	<select id="selectAll" resultType="StudentVo">
+		select * from tbl_student
+		order by sno
+	</select>
+	
+	<!-- 삭제 -->
+	<delete id="deleteStudent">
+		delete from tbl_student
+		where sno = #{sno}
+	</delete>
+	
+	<!-- 등록 -->
+	<insert id="insertStudent">
+		insert into tbl_student
+		values (#{sno}, #{sname}, #{syear}, #{gender}, #{major}, #{score})
+	</insert>
+	
+	<!-- 수정 -->
+	<update id="modifyStudent">
+		update tbl_student
+		set sname = #{sname},
+			syear = #{syear},
+			gender = #{gender},
+			major = #{major},
+			score = #{score}
+		where sno = #{sno}
+	</update>
+	
+	<!-- 한명조회 -->
+	<select id="selectBySno" resultType="StudentVo">
+		select * from tbl_student
+		where sno = #{sno}
+	</select>
+</mapper>
