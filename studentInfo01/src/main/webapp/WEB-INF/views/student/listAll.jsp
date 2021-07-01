@@ -7,6 +7,7 @@
 <meta charset="UTF-8">
 <%@ include file="../include/header.jsp" %>
 <title>글 목록</title>
+<script src="/resources/js/my-script.js"></script>
 <script>
 $(document).ready(function() {
 	$(".btnModify").click(function() {
@@ -41,6 +42,39 @@ $(document).ready(function() {
 				console.log("에러")
 			}
 			
+			
+		});
+	});
+	
+	//row선택시 마우스 포인트 바꾸기, 툴팁
+	$('.content_row').mouseenter(function() {
+		$(this).css("cursor", "pointer");
+		$(this).attr("title", "상담내역보기")
+	});
+	
+	// 상담내역 출력
+	$(".content_row").click(function() {
+		$("#consult_div").toggle();
+		var sno = $(this).attr("data-sno");
+		console.log("sno", sno);
+		$.ajax({
+			"url" : "/consult/getConsultList",
+			"type" : "post",
+			"data" : {"sno" : sno},
+			"dataType" : "json",
+			"success" : function(rData) {
+				var html = "";
+				$.each(rData, function() {
+					html += "<tr><td>" + this.cno + "</td>";
+					html += "<td>" + this.sno + "</td>";
+					html += "<td>" + this.c_content + "</td>";
+					html += "<td>" + changeDateString(this.c_date) + "</td></tr>";
+				})
+				$("#consult_body").html(html);
+			},
+			"error" : function() {
+				console.log("에러");
+			}
 			
 		});
 	});
@@ -86,7 +120,7 @@ $(document).ready(function() {
 				</thead>
 				<tbody>
 					<c:forEach var="vo" items="${list }">
-							<tr>
+							<tr class="content_row" data-sno="${vo.sno}">
 								<td>${vo.sno}</td>
 								<td>${vo.sname}</td>
 								<td>${vo.syear}</td>
@@ -104,6 +138,25 @@ $(document).ready(function() {
 				</tbody>
 			</table>
 			<!-- //table -->
+			<!-- 상담 부분 출력 -->
+			<hr/>
+			<section class="container mt-3" style="max-width:1000px;">
+				<div class="jumbotron" id="consult_div" style="display:none">
+					<table class="table table-sm">
+				<thead>
+					<tr>
+						<th>상담번호</th>
+						<th>상담학생</th>
+						<th>상담내용</th>
+						<th>상담일시</th>
+					</tr>
+				</thead>
+				<tbody id="consult_body">
+				</tbody>
+			</table>
+				</div>
+			</section>
+			<!-- //상담부분 -->
 		</section>
 	</div>
 	
